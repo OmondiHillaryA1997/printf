@@ -37,7 +37,7 @@ int display_char(va_list clas, char buf[], int flags, int width, int precision, 
  * Return: integer
  */
 
-int display_str(va_list clas, char buf[], int flags, int width, int precision int size)
+int display_str(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
 	int length = 0, index = 0;
 	char *s = va_arg(clas, char *);
@@ -58,7 +58,7 @@ int display_str(va_list clas, char buf[], int flags, int width, int precision in
 	while (s[length] != '\0')
 		length++;
 
-	if (preccision >= 0 && precision < length)
+	if (precision >= 0 && precision < length)
 		length = precision;
 
 	if(width > length)
@@ -102,9 +102,9 @@ int display_str(va_list clas, char buf[], int flags, int width, int precision in
  * Return: integer
  */
 
-int display_integer(va_list clas, char buf[], int flags, int width, int size)
+int display_integer(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	int index = BUFF_SIZE - 2;
+	int index = PRINTF_BUFF_SIZE - 2;
 	int neg;
 	long int li = va_arg(clas, long int);
 	unsigned long int uli;
@@ -114,7 +114,7 @@ int display_integer(va_list clas, char buf[], int flags, int width, int size)
 	if (li == 0)
 		buf[index--] = '0';
 
-	buf[BUFF_SIZE - 1] = '\0';
+	buf[PRINTF_BUFF_SIZE - 1] = '\0';
 	uli = (unsigned long int)li;
 
 	if(li < 0)
@@ -126,7 +126,7 @@ int display_integer(va_list clas, char buf[], int flags, int width, int size)
 	while (uli > 0)
 	{
 		buf[index--] = (uli % 10) + '0';
-		num /= 10;
+		uli /= 10;
 	}
 	index++;
 
@@ -149,11 +149,9 @@ int display_integer(va_list clas, char buf[], int flags, int width, int size)
 
 int display_unsg_octal(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	int index;
-	index = BUFF_SIZE - 2;
-	unsigned long int uli = va_arg(class, unsigned long int);
-	unsigned long int uli_1;
-	uli_1 = uli;
+	int index = PRINTF_BUFF_SIZE - 2;
+	unsigned long int uli  = va_arg(clas, unsigned long int);
+	unsigned long int uli_1 = uli;
 
 	UNUSED(width);
 
@@ -162,19 +160,19 @@ int display_unsg_octal(va_list clas, char buf[], int flags, int width, int preci
 	if (uli == 0)
 		buf[index--] = '0';
 
-	buf[BUFF_SIZE - 1] = '\0';
+	buf[PRINTF_BUFF_SIZE - 1] = '\0';
 
 	while (uli > 0)
 	{
 		buf[index--] = (uli % 8) + '0';
-		num /= 8;
+		uli /= 8;
 	}
 
 	if ((flags & fl_ash) && (uli_1) != 0)
 		buf[index--] = '0';
 	index++;
 
-	return (write_unsinteger(0, index, buf, flags, width, precision, length))
+	return (write_unsinteger(0, index, buf, flags, width, precision, size));
 }
 
 /*********DISPLAY PERCENT SIGN**********/
@@ -200,7 +198,7 @@ int display_percent(va_list clas, char buf[], int flags, int width, int precisio
 	UNUSED(precision);
 	UNUSED(size);
 
-	return(write(1, "\%", 1));
+	return(write(1, "%%", 1));
 }
 
 /************DISPLAY UNSIGNED INTEGER************/
@@ -220,7 +218,7 @@ int display_percent(va_list clas, char buf[], int flags, int width, int precisio
 
 int diaplay_unsigned_integer(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	int index = BUFFSIZE - 2;
+	int index = PRINTF_BUFF_SIZE - 2;
 	unsigned long int uli = va_arg(clas, unsigned long int);
 
 	uli = csn(uli, size);
@@ -228,7 +226,7 @@ int diaplay_unsigned_integer(va_list clas, char buf[], int flags, int width, int
 	if (uli == 0)
 		buf[index--] = '0';
 
-	buf[BUFF_SIZE - 1] = '\0';
+	buf[PRINTF_BUFF_SIZE - 1] = '\0';
 
 	while (uli > 0)
 	{
@@ -237,7 +235,7 @@ int diaplay_unsigned_integer(va_list clas, char buf[], int flags, int width, int
 	}
 	index++;
 
-	return (write_unsinteger(0, index, buf, flags, width, precision, size))
+	return (write_unsinteger(0, index, buf, flags, width, precision, size));
 
 }
 
@@ -257,7 +255,7 @@ int diaplay_unsigned_integer(va_list clas, char buf[], int flags, int width, int
 
 int display_unsgn_upprhex(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	return (write_hexdecim(clas, "0123456789ABCDEF", buf, flags, 'X', width, precision, size))
+	return (write_hexdecim(clas, "0123456789ABCDEF", buf, flags, width, precision, size));
 }
 
 /**********DISPLAY LOWER_UPPER HEXADECIMAL***********/
@@ -277,11 +275,14 @@ int display_unsgn_upprhex(va_list clas, char buf[], int flags, int width, int pr
  * Return: integer
  */
 
-int display_lowupper_hexa(va_list clas, char hold, char buf[], int flags, int get_flagch, int precision, int size)
+int display_lowupper_hexa(va_list clas, char hold[], char buf[], int flags, int get_flagch, int width, int precision, int size)
 {
-	int index BUFF_SIZE - 2;
-	unsigned long int uli = va_arg(clas, unsigned long int);
-	unsigned long int uli_1 = uli;
+	int index;
+	unsigned long int uli;
+	unsigned long int uli_1;
+	index = PRINTF_BUFF_SIZE - 2;
+	uli = va_arg(clas, unsigned long int);
+	uli_1= uli;
 
 	UNUSED(width);
 
@@ -289,7 +290,7 @@ int display_lowupper_hexa(va_list clas, char hold, char buf[], int flags, int ge
 
 	if (uli == 0)
 		buf[index--] = '0';
-	buf[BUFF_SIZE - 1] = '\0';
+	buf[PRINTF_BUFF_SIZE - 1] = '\0';
 
 	while (uli > 0)
 	{
@@ -297,7 +298,7 @@ int display_lowupper_hexa(va_list clas, char hold, char buf[], int flags, int ge
 		uli /= 16;
 	}
 
-	if (flags & f_ash && uli_1 != 0)
+	if (flags & fl_ash && uli_1 != 0)
 	{
 		buf[index--] = get_flagch;
 		buf[index--] = '0';
@@ -308,7 +309,7 @@ int display_lowupper_hexa(va_list clas, char hold, char buf[], int flags, int ge
 
 }
 
-/************DISLAY_BINAR***************/
+/************DISLAY_BINARY***************/
 
 /**
  * display_binary - Function that prints unsigned number
@@ -353,15 +354,15 @@ int display_binary(va_list clas, char buf[], int flags, int width, int precision
 			char p = '0' + b[index];
 
 			write(1, &p, 1);
-			count++;
+			cnt++;
 		}
 	}
 	return (cnt);
 }
 
-/
 
-/************DISPLA HEXADECIMAL**************/
+
+/************DISPLAY HEXADECIMAL**************/
 
 /**
  * display_hexadecimal - printf finction that prints hexadecimal
@@ -378,5 +379,5 @@ int display_binary(va_list clas, char buf[], int flags, int width, int precision
 
 int display_hexadecimal(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	return (write_hexdecim(clas, "0123456789abcdef", buf, flags, 'x', width, precision, size));
+	return (write_hexdecim(clas, "0123456789abcdef", buf, flags, width, precision, size));
 }

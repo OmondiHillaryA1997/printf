@@ -19,12 +19,10 @@ int _printf(const char *format, ...)
 
 	/* optional arguments */
 	va_list lst_prnt;
-	char buf[BUFF_SIZE];
+	char buf[PRINTF_BUFF_SIZE];
 
 	if (format == NULL)
-	{
 		return (-1);
-	}
 
 	va_start(lst_prnt, format); /* optional argument Declaration */
 	for(index = 0; format && format[index] != '\0'; index++)
@@ -32,7 +30,7 @@ int _printf(const char *format, ...)
 		if (format[index] != '%')
 		{
 			buf[b_end++] = format[index];
-			if (b_end == BUFF_SIZE)
+			if (b_end == PRINTF_BUFF_SIZE)
 				prnt_buff(buf, &b_end);
 count_ch++;
 		}
