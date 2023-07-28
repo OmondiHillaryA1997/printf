@@ -155,7 +155,7 @@ int display_unsg_octal(va_list clas, char buf[], int flags, int width, int preci
 
 	UNUSED(width);
 
-	uli = csn(uli, size);
+	uli = csn_unsgnd(uli, size);
 
 	if (uli == 0)
 		buf[index--] = '0';
@@ -221,7 +221,7 @@ int diaplay_unsigned_integer(va_list clas, char buf[], int flags, int width, int
 	int index = PRINTF_BUFF_SIZE - 2;
 	unsigned long int uli = va_arg(clas, unsigned long int);
 
-	uli = csn(uli, size);
+	uli = csn_unsgnd(uli, size);
 
 	if (uli == 0)
 		buf[index--] = '0';
@@ -380,4 +380,75 @@ int display_binary(va_list clas, char buf[], int flags, int width, int precision
 int display_hexadecimal(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
 	return (write_hexdecim(clas, "0123456789abcdef", buf, flags, width, precision, size));
+}
+
+
+/**************GET PRECISION********/
+
+/**
+ * g_precision - get precision
+ * @format: formatted string
+ * @index: argument list to be printed
+ * @lst_prnt: arguments list
+ *
+ * Return: precision
+ */
+
+int g_precision(const char *format, int *index, va_list lst_prnt)
+{
+	int c_r_index = *index + 1;
+	int precision = -1;
+
+	if (format[c_r_index] != '.')
+		return (precision);
+
+	precision = 0;
+
+	for (c_r_index += 1; format[c_r_index] != '\0'; c_r_index++)
+	{
+		if (i_digit(format[c_r_index]))
+		{
+			c_r_index++;
+			precision = va_arg(lst_prnt, int);
+			break;
+		}
+		else
+			break;
+	}
+	*index = c_r_index - 1;
+
+	return (precision);
+}
+
+/***********GET FLAGS************/
+
+/**
+ * find_flgs - gets flags
+ * @format: formatted string
+ * @index: argument list to be printed
+ *
+ * Return: flags
+ */
+
+int find_flgs(const char *format, int *index)
+{
+	int g, c_r_index, flags = 0;
+	const char  flgs_ch[] = {'-', '+', '0', '#', ' ', '\0'};
+	const int flgs_ar[] = {fl_minas, fl_plas, fl_ziro, fl_ash, fl_spes, 0};
+
+	for (c_r_index = *index + 1; format[c_r_index] != '\0'; c_r_index++)
+	{
+		for (g = 0; flgs_ch[g] != '\0'; g++)
+			if (format[c_r_index] == flgs_ch[g])
+			{
+				flags |= flgs_ar[g];
+				break;
+			}
+		if (flgs_ch[g] == 0)
+			break;
+
+	}
+
+	*index = c_r_index - 1;
+	return (flags);
 }
