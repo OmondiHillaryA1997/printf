@@ -1,5 +1,7 @@
 /*******IF CHARACTER IS PRINTABLES**********/
 
+#include "main.h"
+
 /**
  * is_print - Function that evaluates if character is printable
  * @c: char to be evaluated
@@ -24,7 +26,7 @@ int is_print(char c)
  * Return: 3 always
  */
 
-int ap_hx_cd(char ascii, char buf[], int index)
+int ap_hx_cd(char ascii, char buf[], int i)
 {
 	char hold[] = "0123456789ABCDEF";
 	if (ascii < 0)
@@ -83,7 +85,7 @@ long int csn_unsgnd(unsigned long int uli, int size)
 {
 	if (size == SIZE_LONG)
 		return (uli);
-	else if (seze == SIZE_SHORT)
+	else if (size == SIZE_SHORT)
 		return ((unsigned short)uli);
 	return ((unsigned int)uli);
 }

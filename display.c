@@ -52,7 +52,7 @@ int display_str(va_list clas, char buf[], int flags, int width, int precision, i
 	{
 		st = "(null)";
 		if (precision > 5)
-			s = " ";
+			st = " ";
 	}
 
 	while (st[length] != '\0')
@@ -351,7 +351,7 @@ int display_binary(va_list clas, char buf[], int flags, int width, int precision
 		sum = a[i];
 		if ((sum) || (i ==32))
 		{
-			char z = '0' + b[index];
+			char z = '0' + a[i];
 
 			write(1, &z, 1);
 			cnt++;
@@ -379,7 +379,7 @@ int display_binary(va_list clas, char buf[], int flags, int width, int precision
 
 int display_hexadecimal(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	return (write_hexa(clas, "0123456789abcdef", buf, flags, 'x',  width, precision, size));
+	return (display_lowupper_hexa(clas, "0123456789abcdef", buf, flags, 'x',  width, precision, size));
 }
 
 

@@ -24,7 +24,7 @@ int display_reverse(va_list clas, char buf[], int flags, int width, int precisio
 	UNUSED(width);
 	UNUSED(size);
 
-	s = va_arg(clas, char *);
+	st = va_arg(clas, char *);
 
 		if (st == NULL)
 		{
@@ -33,7 +33,7 @@ int display_reverse(va_list clas, char buf[], int flags, int width, int precisio
 			st = ")Null(";
 		}
 	i = 0;
-	for (; s[i]; i++)
+	for (; st[i]; i++)
 		;
 
 	for (i = i - 1; i >= 0; i--)

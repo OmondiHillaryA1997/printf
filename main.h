@@ -1,11 +1,11 @@
 /**************START OF GUARD**********/
-#ifndef "MAIN_H"
-#define "MAIN.H"
+#ifndef MAIN_H
+#define MAIN_H
 
 
 /******** STDLIB.H FILES TO INCLUDE******/
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <unistd.h>
 
 /**************MACROS USED**************/
@@ -83,7 +83,7 @@ int  write_num(int neg, int in_d, char buf[], int flags, int width, int precisio
 int write_num1(int in_d, char buf[], int flags, int width, int prec, int length, char pad, char exc);
 int write_unsgnd(int neg, int in_d, char buf[], int flags, int width, int precision, int size);
 int write_pointer(char buf[], int in_d, int length, int width, int flags, char pad, char exc, int pads);
-
+int specifier_print(const char *spec, int *in_d, va_list lst_prnt, char buf[], int flags, int width, int precision, int size);
 
 
 

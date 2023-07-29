@@ -34,7 +34,7 @@ int take_write_ch(char c, char buf[], int flags, int width, int precision, int s
 
 		if (flags & fl_minas)
 			return (write(1, &buf[0], 1) +
-					write(1, &buf[PRINTF_BIFF_SIZE - i - 1], width - 1));
+					write(1, &buf[PRINTF_BUFF_SIZE - i - 1], width - 1));
 		else
 			return (write(1, &buf[PRINTF_BUFF_SIZE - i - 1], width - 1) + write(1, &buf[0], 1));
 	}
@@ -58,7 +58,7 @@ int take_write_ch(char c, char buf[], int flags, int width, int precision, int s
 int  write_num(int neg, int in_d, char buf[], int flags, int width, int precision, int size)
 {
 	int length = PRINTF_BUFF_SIZE - in_d - 1;
-	char pad - ' ', exc = 0;
+	char pad = ' ', exc = 0;
 
 	UNUSED(size);
 
@@ -97,29 +97,29 @@ int write_num1(int in_d, char buf[], int flags, int width, int prec, int length,
 	if (prec == 0 && in_d == PRINTF_BUFF_SIZE - 2 && buf[in_d] == '0')
 		buf[in_d] = pad = ' ';
 	if (prec > 0 && prec < length)
-		pad = '';
+		pad = ' ';
 	while (prec > length)
-		buf[--in_d] = '0'; length++;
+		buf[--in_d] = '0', length++;
 	if (exc != 0)
 		length++;
 	if(width > length)
 	{
-		for (i = 1; i < widh - length + 1; i++)
+		for (i = 1; i < width - length + 1; i++)
 			buf[i] = pad;
 		buf[i] = '\0';
 		if (flags & fl_minas && pad == ' ')
 		{
 			if (exc)
 				buf[--in_d] = exc;
-			return (write(1, &buf[1], length) + write(1, &buf[1], i - 1))
+			return (write(1, &buf[1], length) + write(1, &buf[1], i - 1));
 					}
-					else if (!(flags & f_minas) && pad == ' ')
+					else if (!(flags & fl_minas) && pad == ' ')
 					{
 					if (exc)
 					buf[--in_d] = exc;
 					return (write(1, &buf[1], i - 1) + write(1, &buf[in_d], length));
 					}
-		else if (!(flags & fl_minas) && pas == '0')
+		else if (!(flags & fl_minas) && pad == '0')
 		{
 			if (exc)
 				buf[--pads] = exc;
@@ -146,7 +146,7 @@ int write_num1(int in_d, char buf[], int flags, int width, int prec, int length,
 
 int write_unsgnd(int neg, int in_d, char buf[], int flags, int width, int precision, int size)
 {
-	int length = PRINTF_BUFF_SIZE - in_d - 1, index = 0;
+	int length = PRINTF_BUFF_SIZE - in_d - 1, i = 0;
 	char pad = ' ';
 
 	UNUSED(neg);
@@ -165,10 +165,10 @@ int write_unsgnd(int neg, int in_d, char buf[], int flags, int width, int precis
 
 	if (width > length)
 	{
-		for (index = 0; index < width - length; index++)
-			buf[index] = pad;
+		for (i = 0; i < width - length; i++)
+			buf[i] = pad;
 	
-		buf[index] = '\0';
+		buf[i] = '\0';
 	
 		if (flags & fl_minas)
 		{

@@ -40,9 +40,9 @@ count_ch++;
 			flags = find_flgs(format, &i);
 			width = g_width(format, &i, lst_prnt);
 			precision = g_precision(format, &i, lst_prnt);
-			size = g_size(format, &i, lst_prnt);
+			size = g_size(format, &i);
 			i++;
-			count = specifier_prnt(format, &i, lst_prnt, buf, flags, width, precision, size);
+			count = specifier_print(format, &i, lst_prnt, buf, flags, width, precision, size);
 
 			if (count == -1)
 				return (-1);
