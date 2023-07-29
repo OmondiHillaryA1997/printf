@@ -17,9 +17,9 @@
 
 int display_char(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	char v_cls = va_arg(clas, int);
+	char c = va_arg(clas, int);
 
-	return (take_write_ch(v_cls, buf, flags, width, precision, size));
+	return (take_write_ch(c, buf, flags, width, precision, size));
 }
 
 /****************DISPLAYING STRING**************/
@@ -39,8 +39,8 @@ int display_char(va_list clas, char buf[], int flags, int width, int precision, 
 
 int display_str(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	int length = 0, index = 0;
-	char *s = va_arg(clas, char *);
+	int length = 0, i = 0;
+	char *st = va_arg(clas, char *);
 
 	UNUSED(buf);
 	UNUSED(flags);
@@ -48,14 +48,14 @@ int display_str(va_list clas, char buf[], int flags, int width, int precision, i
 	UNUSED(precision);
 	UNUSED(size);
 
-	if (s == NULL)
+	if (st == NULL)
 	{
-		s = "(null)";
+		st = "(null)";
 		if (precision > 5)
 			s = " ";
 	}
 
-	while (s[length] != '\0')
+	while (st[length] != '\0')
 		length++;
 
 	if (precision >= 0 && precision < length)
@@ -65,27 +65,27 @@ int display_str(va_list clas, char buf[], int flags, int width, int precision, i
 	{
 		if (flags & fl_minas)
 		{
-			write(1, &s[0], length);
-			index = (width - length);
-			while (index > 0)
+			write(1, &st[0], length);
+			i = (width - length);
+			while (i > 0)
 				write(1, "", 1);
-			index--;
+			i--;
 
 			return(width);
 		}
 		else
 		{
-			index = (width - length);
-			while (index > 0)
+			i = (width - length);
+			while (i > 0)
 			{
 				write(1, "", 1);
-				write(1, &s[0], length);
+				write(1, &st[0], length);
 				return (width);
 			}
-			index--;
+			i--;
 		}
 	}
-	return (write(1, s, length));
+	return (write(1, st, length));
 }
 
 /*********DISPLAY INTEGER***********/
@@ -104,7 +104,7 @@ int display_str(va_list clas, char buf[], int flags, int width, int precision, i
 
 int display_integer(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	int index = PRINTF_BUFF_SIZE - 2;
+	int i = PRINTF_BUFF_SIZE - 2;
 	int neg;
 	long int li = va_arg(clas, long int);
 	unsigned long int uli;
@@ -112,7 +112,7 @@ int display_integer(va_list clas, char buf[], int flags, int width, int precisio
 	li = csn(li, size);
 
 	if (li == 0)
-		buf[index--] = '0';
+		buf[i--] = '0';
 
 	buf[PRINTF_BUFF_SIZE - 1] = '\0';
 	uli = (unsigned long int)li;
@@ -125,12 +125,12 @@ int display_integer(va_list clas, char buf[], int flags, int width, int precisio
 
 	while (uli > 0)
 	{
-		buf[index--] = (uli % 10) + '0';
+		buf[i--] = (uli % 10) + '0';
 		uli /= 10;
 	}
-	index++;
+	i++;
 
-	return (write_num(neg, index, buf, flags, width, precision, size));
+	return (write_num(neg, i, buf, flags, width, precision, size));
 }
 
 /************DISPLAY UNSIGNED OCTAL************/
@@ -149,7 +149,7 @@ int display_integer(va_list clas, char buf[], int flags, int width, int precisio
 
 int display_unsg_octal(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	int index = PRINTF_BUFF_SIZE - 2;
+	int i = PRINTF_BUFF_SIZE - 2;
 	unsigned long int uli  = va_arg(clas, unsigned long int);
 	unsigned long int uli_1 = uli;
 
@@ -158,21 +158,21 @@ int display_unsg_octal(va_list clas, char buf[], int flags, int width, int preci
 	uli = csn_unsgnd(uli, size);
 
 	if (uli == 0)
-		buf[index--] = '0';
+		buf[i--] = '0';
 
 	buf[PRINTF_BUFF_SIZE - 1] = '\0';
 
 	while (uli > 0)
 	{
-		buf[index--] = (uli % 8) + '0';
+		buf[i--] = (uli % 8) + '0';
 		uli /= 8;
 	}
 
 	if ((flags & fl_ash) && (uli_1) != 0)
-		buf[index--] = '0';
-	index++;
+		buf[i--] = '0';
+	i++;
 
-	return (write_unsgnd(0, index, buf, flags, width, precision, size));
+	return (write_unsgnd(0, i, buf, flags, width, precision, size));
 }
 
 /*********DISPLAY PERCENT SIGN**********/
@@ -216,26 +216,26 @@ int display_percent(va_list clas, char buf[], int flags, int width, int precisio
  * Return: integer
  */
 
-int diaplay_unsigned_integer(va_list clas, char buf[], int flags, int width, int precision, int size)
+int display_unsigned_integer(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	int index = PRINTF_BUFF_SIZE - 2;
+	int i = PRINTF_BUFF_SIZE - 2;
 	unsigned long int uli = va_arg(clas, unsigned long int);
 
 	uli = csn_unsgnd(uli, size);
 
 	if (uli == 0)
-		buf[index--] = '0';
+		buf[i--] = '0';
 
 	buf[PRINTF_BUFF_SIZE - 1] = '\0';
 
 	while (uli > 0)
 	{
-		buf[index--] = (uli % 10) + '0';
+		buf[i--] = (uli % 10) + '0';
 		uli /= 10;
 	}
-	index++;
+	i++;
 
-	return (write_unsgnd(0, index, buf, flags, width, precision, size));
+	return (write_unsgnd(0, i, buf, flags, width, precision, size));
 
 }
 
@@ -277,10 +277,10 @@ int display_unsgn_upprhex(va_list clas, char buf[], int flags, int width, int pr
 
 int display_lowupper_hexa(va_list clas, char hold[], char buf[], int flags, int get_flagch, int width, int precision, int size)
 {
-	int index;
+	int i;
 	unsigned long int uli;
 	unsigned long int uli_1;
-	index = PRINTF_BUFF_SIZE - 2;
+	i = PRINTF_BUFF_SIZE - 2;
 	uli = va_arg(clas, unsigned long int);
 	uli_1= uli;
 
@@ -289,23 +289,23 @@ int display_lowupper_hexa(va_list clas, char hold[], char buf[], int flags, int 
 	uli =  csn(uli,size );
 
 	if (uli == 0)
-		buf[index--] = '0';
+		buf[i--] = '0';
 	buf[PRINTF_BUFF_SIZE - 1] = '\0';
 
 	while (uli > 0)
 	{
-		buf[index--] = hold[uli % 16];
+		buf[i--] = hold[uli % 16];
 		uli /= 16;
 	}
 
 	if (flags & fl_ash && uli_1 != 0)
 	{
-		buf[index--] = get_flagch;
-		buf[index--] = '0';
+		buf[i--] = get_flagch;
+		buf[i--] = '0';
 	}
-	index++;
+	i++;
 
-	return (write_unsgnd(0, index, buf, flags, width, precision, size));
+	return (write_unsgnd(0, i, buf, flags, width, precision, size));
 
 }
 
@@ -325,8 +325,8 @@ int display_lowupper_hexa(va_list clas, char hold[], char buf[], int flags, int 
 
 int display_binary(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	unsigned int li, t, index, sum;
-	unsigned int b[32];
+	unsigned int li, t, i, sum;
+	unsigned int a[32];
 	int cnt;
 
 	UNUSED(buf);
@@ -337,23 +337,23 @@ int display_binary(va_list clas, char buf[], int flags, int width, int precision
 
 	li = va_arg(clas, unsigned int);
 	t = 2147483648;
-	b[0] = li / t;
-	for (index = 1; index < 32; index++)
+	a[0] = li / t;
+	for (i = 1; i < 32; i++)
 	{
 		t /= 2;
-		b[index] = (li / t) % 2;
+		a[i] = (li / t) % 2;
 	}
-	index = 0;
+	i = 0;
 	sum = 0;
 	cnt = 0;
-	for(; index < 32; index++)
+	for(; i < 32; i++)
 	{
-		sum = b[index];
-		if ((sum) || (index ==32))
+		sum = a[i];
+		if ((sum) || (i ==32))
 		{
-			char p = '0' + b[index];
+			char z = '0' + b[index];
 
-			write(1, &p, 1);
+			write(1, &z, 1);
 			cnt++;
 		}
 	}
@@ -388,15 +388,15 @@ int display_hexadecimal(va_list clas, char buf[], int flags, int width, int prec
 /**
  * g_precision - get precision
  * @format: formatted string
- * @index: argument list to be printed
+ * @i: argument list to be printed
  * @lst_prnt: arguments list
  *
  * Return: precision
  */
 
-int g_precision(const char *format, int *index, va_list lst_prnt)
+int g_precision(const char *format, int *i, va_list lst_prnt)
 {
-	int c_r_index = *index + 1;
+	int c_r_index = *i + 1;
 	int precision = -1;
 
 	if (format[c_r_index] != '.')
@@ -415,7 +415,7 @@ int g_precision(const char *format, int *index, va_list lst_prnt)
 		else
 			break;
 	}
-	*index = c_r_index - 1;
+	*i = c_r_index - 1;
 
 	return (precision);
 }
@@ -430,13 +430,13 @@ int g_precision(const char *format, int *index, va_list lst_prnt)
  * Return: flags
  */
 
-int find_flgs(const char *format, int *index)
+int find_flgs(const char *format, int *i)
 {
 	int g, c_r_index, flags = 0;
 	const char  flgs_ch[] = {'-', '+', '0', '#', ' ', '\0'};
 	const int flgs_ar[] = {fl_minas, fl_plas, fl_ziro, fl_ash, fl_spes, 0};
 
-	for (c_r_index = *index + 1; format[c_r_index] != '\0'; c_r_index++)
+	for (c_r_index = *i + 1; format[c_r_index] != '\0'; c_r_index++)
 	{
 		for (g = 0; flgs_ch[g] != '\0'; g++)
 			if (format[c_r_index] == flgs_ch[g])
@@ -449,6 +449,6 @@ int find_flgs(const char *format, int *index)
 
 	}
 
-	*index = c_r_index - 1;
+	*i = c_r_index - 1;
 	return (flags);
 }
