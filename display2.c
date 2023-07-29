@@ -94,7 +94,7 @@ int display_pointer(va_list clas, char buf[], int flags, int width, int precisio
 
 	in_d++;
 
-	return (display_pointer(buf, in_d, length, width, flags, pad, exc, pad_start));
+	return (write_pointer(buf, in_d, length, width, flags, pad, exc, pad_start));
 }
 
 

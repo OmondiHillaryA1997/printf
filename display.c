@@ -19,7 +19,7 @@ int display_char(va_list clas, char buf[], int flags, int width, int precision, 
 {
 	char v_cls = va_arg(clas, int);
 
-	return (display_write(v_cls, buf, flags, width, precision, size));
+	return (take_write_ch(v_cls, buf, flags, width, precision, size));
 }
 
 /****************DISPLAYING STRING**************/
@@ -130,7 +130,7 @@ int display_integer(va_list clas, char buf[], int flags, int width, int precisio
 	}
 	index++;
 
-	return (write_integer(neg, index, buf, flags, width, precision, size));
+	return (write_num(neg, index, buf, flags, width, precision, size));
 }
 
 /************DISPLAY UNSIGNED OCTAL************/
@@ -172,7 +172,7 @@ int display_unsg_octal(va_list clas, char buf[], int flags, int width, int preci
 		buf[index--] = '0';
 	index++;
 
-	return (write_unsinteger(0, index, buf, flags, width, precision, size));
+	return (write_unsgnd(0, index, buf, flags, width, precision, size));
 }
 
 /*********DISPLAY PERCENT SIGN**********/
@@ -235,7 +235,7 @@ int diaplay_unsigned_integer(va_list clas, char buf[], int flags, int width, int
 	}
 	index++;
 
-	return (write_unsinteger(0, index, buf, flags, width, precision, size));
+	return (write_unsgnd(0, index, buf, flags, width, precision, size));
 
 }
 
@@ -255,7 +255,7 @@ int diaplay_unsigned_integer(va_list clas, char buf[], int flags, int width, int
 
 int display_unsgn_upprhex(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	return (write_hexdecim(clas, "0123456789ABCDEF", buf, flags, width, precision, size));
+	return (display_lowupper_hexa(clas, "0123456789ABCDEF", buf, flags, 'X',  width, precision, size));
 }
 
 /**********DISPLAY LOWER_UPPER HEXADECIMAL***********/
@@ -266,7 +266,7 @@ int display_unsgn_upprhex(va_list clas, char buf[], int flags, int width, int pr
  * @clas: displays arguments
  * @hold: value array
  * @buf: array buffer
- * @flags: count flags
+ * @flags: count flagsi
  * @get_flagch: count flags
  * @width: get size width
  * @precision: specifies precision
@@ -305,7 +305,7 @@ int display_lowupper_hexa(va_list clas, char hold[], char buf[], int flags, int 
 	}
 	index++;
 
-	return (write_unsinteger(0, index, buf, flags, width, precision, size));
+	return (write_unsgnd(0, index, buf, flags, width, precision, size));
 
 }
 
@@ -379,7 +379,7 @@ int display_binary(va_list clas, char buf[], int flags, int width, int precision
 
 int display_hexadecimal(va_list clas, char buf[], int flags, int width, int precision, int size)
 {
-	return (write_hexdecim(clas, "0123456789abcdef", buf, flags, width, precision, size));
+	return (write_hexa(clas, "0123456789abcdef", buf, flags, 'x',  width, precision, size));
 }
 
 

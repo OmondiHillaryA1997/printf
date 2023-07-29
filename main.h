@@ -73,7 +73,17 @@ int display_rot13s(va_list clas, char buf[], int flags, int width, int precision
 int display_n_printable(va_list clas, char buf[], int flags, int width, int precision, int size);
 int g_width(const char *format, int *index, va_list lst_prnt);
 int g_size(const char *format, int *index);
-int specifier_print(const char *spec, int *in_d, va_list lst_prnt, char buf[], int flags, int width, int precisio, int size);
+int specifier_print(const char *spec, int *index, va_list lst_prnt, char buf[], int flags, int width, int precision, int size);
+int take_write_ch(char v_cls, char buf[], int flags, int width, int precision, int size);
+int  write_num(int neg, int in_d, char buf[], int flags, int width, int precision, int size);
+int write_num1(int in_d, char buf[], int flags, int width, int prec, int length, char pad, char exc);
+int write_unsgnd(int neg, int in_d, char buf[], int flags, int width, int precision, int size);
+int write_pointer(char buf[], int in_d, int length, int width, int flags, char pad, char exc, int pads);
+int is_print(char);
+int ap_hx_cd(char, char[], int);
+int i_digit(char);
+long int csn_unsgnd(unsigned long int uli, int size);
+long int csn(long int uli, int size);
 
 
 
