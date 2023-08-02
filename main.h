@@ -73,7 +73,7 @@ int write_char_handler(char c, char buffer[], int flags, int width, int precisio
 int write_number(int is_pos, int ind, char buffer[], int flags, int width, int precision, int size);
 int write_numb(int ind, char buff[], int flags, int width, int precision, int length, char extra_c, char padd);
 int write_pointer(int ind, char buffer[], int length, int width, int flags, char padd, char extra_c, int padd_start);
-int write_unsg(int is_neg, int ind, char buffer[], int flags, int width, int precision, int size);
+int write_unsg(int is_neg, int ind, char buffer[], int flags, int width, int precision, int size); 
 int display_lowupper_hexa(va_list clas, char hold[], char buf[], int flags, int get_flagch, int width, int precision, int size);
 int display_binary(va_list clas, char buf[], int flags, int width, int precision, int size);
 int display_hexadecimal(va_list clas, char buf[], int flags, int width, int precision, int size);
