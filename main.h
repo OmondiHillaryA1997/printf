@@ -1,11 +1,11 @@
 /**************START OF GUARD**********/
-#ifndef "MAIN_H"
-#define "MAIN.H"
+#ifndef MAIN_H
+#define MAIN_H
 
 
 /******** STDLIB.H FILES TO INCLUDE******/
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <unistd.h>
 
 /**************MACROS USED**************/
@@ -18,7 +18,7 @@
 #define UNUSED(x)(void)(x)
 
 
-#define BUFF_SIZE 1024
+#define PRINTF_BUFF_SIZE 1024
 
 /**
  * int find_flgs(const char *format, int *index);
@@ -53,18 +53,14 @@ typedef struct spec spec_t;
 
 
 /************PROTOTYPES***********/
-
 int _printf(const char *format, ...);
-int g_prnt(const char *format, int &index, va_list lst_prnt, char buf, int flags, int width, int precision, int size);
-int display_char(va_list clas, char buf[], int flags, int width, int precision, int size);
-int display_str(va_list clas, char buf[], int flags, int width, int precision int size);
-int display_integer(va_list clas, char buf[], int flags, int width, int size);
+int specifier_print(const char *spec, int *in_d, va_list lst_prnt, char buf[], int flags, int width, int precision, int size);
 int display_char(va_list clas, char buf[], int flags, int width, int precision, int size);
 int display_str(va_list clas, char buf[], int flags, int width, int precision, int size);
 int display_integer(va_list clas, char buf[], int flags, int width, int precision, int size);
 int display_unsg_octal(va_list clas, char buf[], int flags, int width, int precision, int size);
 int display_percent(va_list clas, char buf[], int flags, int width, int precision, int size);
-int diaplay_unsigned_integer(va_list clas, char buf[], int flags, int width, int precision, int size);
+int display_unsigned_integer(va_list clas, char buf[], int flags, int width, int precision, int size);
 int display_unsgn_upprhex(va_list clas, char buf[], int flags, int width, int precision, int size);
 int display_lowupper_hexa(va_list clas, char hold, char buf[], int flags, int get_flagch, int precision, int size);
 int display_binary(va_list clas, char buf[], int flags, int width, int precision, int size);
@@ -73,19 +69,30 @@ int write_char_handler(char c, char buffer[], int flags, int width, int precisio
 int write_number(int is_pos, int ind, char buffer[], int flags, int width, int precision, int size);
 int write_numb(int ind, char buff[], int flags, int width, int precision, int length, char extra_c, char padd);
 int write_pointer(int ind, char buffer[], int length, int width, int flags, char padd, char extra_c, int padd_start);
-int write_unsg(int is_neg, int ind, char buffer[], int flags, int width, int precision, int size); 
+int write_unsg(int is_neg, int ind, char buffer[], int flags, int width, int precision, int size);
 int display_lowupper_hexa(va_list clas, char hold[], char buf[], int flags, int get_flagch, int width, int precision, int size);
 int display_binary(va_list clas, char buf[], int flags, int width, int precision, int size);
 int display_hexadecimal(va_list clas, char buf[], int flags, int width, int precision, int size);
-int g_precision(const char *format, int *index, va_list lst_prnt);
-int find_flgs(const char *format, int *index);
+int g_precision(const char *format, int *i, va_list lst_prnt);
+int find_flgs(const char *format, int *i);
 int display_reverse(va_list clas, char buf[], int flags, int width, int precision, int size);
 int display_pointer(va_list clas, char buf[], int flags, int width, int precision, int size);
 int display_rot13s(va_list clas, char buf[], int flags, int width, int precision, int size);
 int display_n_printable(va_list clas, char buf[], int flags, int width, int precision, int size);
-int g_width(const char *format, int *index, va_list lst_prnt);
-int g_size(const char *format, int *index);
-int specifier_print(const char *spec, int *in_d, va_list lst_prnt, char buf[], int flags, int width, int precisio, int size);
+int g_width(const char *format, int *i, va_list lst_prnt);
+int g_size(const char *format, int *i);
+int is_print(char);
+int ap_hx_cd(char, char[], int);
+int i_digit(char);
+long int csn(long int uli, int size);
+long int csn_unsgnd(unsigned long int uli, int size);
+int take_write_ch(char c, char buf[], int flags, int width, int precision, int size);
+int  write_num(int neg, int in_d, char buf[], int flags, int width, int precision, int size);
+int write_num1(int in_d, char buf[], int flags, int width, int prec, int length, char pad, char exc);
+int write_unsgnd(int neg, int in_d, char buf[], int flags, int width, int precision, int size);
+int write_pointer(char buf[], int in_d, int length, int width, int flags, char pad, char exc, int pads);
+int specifier_print(const char *spec, int *in_d, va_list lst_prnt, char buf[], int flags, int width, int precision, int size);
+
 
 
 

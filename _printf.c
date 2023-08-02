@@ -12,7 +12,7 @@ void prnt_buff(char buf[], int *b_end);
 int _printf(const char *format, ...)
 {
 	/* Initialization of integers */
-	int index, count = 0, count_ch = 0;
+	int i, count = 0, count_ch = 0;
 
 	/* Declaration of helper functions */
 	int flags, width, precision, size, b_end;
@@ -25,11 +25,11 @@ int _printf(const char *format, ...)
 		return (-1);
 
 	va_start(lst_prnt, format); /* optional argument Declaration */
-	for(index = 0; format && format[index] != '\0'; index++)
+	for(i = 0; format && format[i] != '\0'; i++)
 	{
-		if (format[index] != '%')
+		if (format[i] != '%')
 		{
-			buf[b_end++] = format[index];
+			buf[b_end++] = format[i];
 			if (b_end == PRINTF_BUFF_SIZE)
 				prnt_buff(buf, &b_end);
 count_ch++;
@@ -37,12 +37,12 @@ count_ch++;
 		else
 		{
 			prnt_buff(buf, &b_end);
-			flags = find_flgs(format, &index);
-			width = g_width(format, &index, lst_prnt);
-			precision = g_precision(format, &index, lst_prnt);
-			size = g_size(format, &index, lst_prnt);
-			index++;
-			count = g_prnt(format, &index, lst_prnt, buf, flags, width, precision, size);
+			flags = find_flgs(format, &i);
+			width = g_width(format, &i, lst_prnt);
+			precision = g_precision(format, &i, lst_prnt);
+			size = g_size(format, &i);
+			i++;
+			count = specifier_print(format, &i, lst_prnt, buf, flags, width, precision, size);
 
 			if (count == -1)
 				return (-1);
